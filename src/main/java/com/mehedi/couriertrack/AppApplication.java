@@ -1,4 +1,4 @@
-package com.mehedi.couriertrack.app;
+package com.mehedi.couriertrack;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
