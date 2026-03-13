@@ -18,7 +18,7 @@ public class AppUser {
     private String password;
     private String role;
 
-    AppUser(String userName, String password, String role) {
+    public AppUser(String userName, String password, String role) {
         this.userName = userName;
         this.password = password;
         this.role = role;
