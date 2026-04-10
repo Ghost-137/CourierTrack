@@ -62,7 +62,7 @@
 
 
     <div style="text-align: center; margin-top: 20px;">
-        <h1>🧠 Studying: <span th:text="${deck.name}"></span></h1>
+        <h1>🔴 Intensive Practice Mode</h1>
         <a href="/decks">⬅ Back to Dashboard</a>
         <h3 id="progress-text">Card 1 of X</h3>
     </div>
@@ -81,7 +81,6 @@
 
     <div class="controls" style="margin-top: 15px;">
         <button onclick="toggleFavorite()" id="fav-btn" style="background-color: #f1c40f; border: none; border-radius: 5px;">☆ Favorite</button>
-        <button onclick="togglePractice()" id="prac-btn" style="background-color: #e74c3c; color: white; border: none; border-radius: 5px;">🔴 Needs Practice</button>
     </div>
 
     <script th:inline="javascript">
@@ -154,23 +153,7 @@
             }
         }
 
-        function togglePractice() {
-            if (cards.length === 0) return;
-            let cardId = cards[currentIndex].id;
-            
-            // Call the database silently
-            fetch('/api/toggle-practice/' + cardId);
-            
-            // Update the button visually
-            let btn = document.getElementById('prac-btn');
-            if (btn.innerText === "🔴 Needs Practice") {
-                btn.innerText = "🟢 Good";
-                btn.style.backgroundColor = "#2ecc71";
-            } else {
-                btn.innerText = "🔴 Needs Practice";
-                btn.style.backgroundColor = "#e74c3c";
-            }
-        }
+        
 
         // Load the very first card when the page opens!
         window.onload = () => loadCard(0);

@@ -10,6 +10,8 @@ import com.mehedi.couriertrack.domain.Deck;
 import com.mehedi.couriertrack.domain.DeckRepository;
 import com.mehedi.couriertrack.domain.Flashcard;
 import com.mehedi.couriertrack.domain.FlashcardRepository;
+import java.security.Principal;
+
 
 @Controller
 public class FlashcardController {
@@ -68,4 +70,22 @@ public class FlashcardController {
         flashcardRepository.deleteById(cardId);
         return "redirect:/deck/" + deckId; // Send them back to that specific deck manager
     }
+    
+    @GetMapping("/favorites")
+    public String showFavorites(Model model, Principal principal) {
+        // principal.getName() gets your username (e.g., "mehedi" or your Google email)
+        model.addAttribute("favorites", flashcardRepository.findByDeckAppUserUserNameAndIsFavoriteTrue(principal.getName()));
+        return "favorites";
+    }
+
+    // 8. Show the "Practice More" Study Page
+
+    @GetMapping("/practice")
+    public String showPractice(Model model, Principal principal) {
+        // Updated method name here!
+        model.addAttribute("flashcards", flashcardRepository.findByDeckAppUserUserNameAndNeedsPracticeTrue(principal.getName()));
+        return "practice";
+    }
+
+
 }

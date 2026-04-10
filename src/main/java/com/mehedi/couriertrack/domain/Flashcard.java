@@ -17,6 +17,9 @@ public class Flashcard {
     private String frontText; // e.g., "To speak"
     private String backText;  // e.g., "Puhua"
 
+
+    private boolean isFavorite = false; // New field to mark as favorite
+    private boolean needsPractice = false; // New field to track if it needs practice
     // THE RELATIONSHIP: Many Flashcards belong to One Deck
     @ManyToOne
     @JoinColumn(name = "deck_id")
@@ -43,4 +46,10 @@ public class Flashcard {
 
     public Deck getDeck() { return deck; }
     public void setDeck(Deck deck) { this.deck = deck; }
+
+    public boolean isFavorite() { return isFavorite; }
+    public void setFavorite(boolean isFavorite) { this.isFavorite = isFavorite; }
+
+    public boolean isNeedsPractice() { return needsPractice; }
+    public void setNeedsPractice(boolean needsPractice) { this.needsPractice = needsPractice; }
 }

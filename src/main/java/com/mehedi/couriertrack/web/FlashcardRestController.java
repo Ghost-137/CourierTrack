@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mehedi.couriertrack.domain.Flashcard;
@@ -40,4 +41,26 @@ public class FlashcardRestController {
         
         return allCards.get(randomIndex);
     }
+
+    @GetMapping("/api/toggle-favorite/{id}")
+    public void toggleFavoriteApi(@PathVariable Long id) {
+        Flashcard card = flashcardRepository.findById(id).orElseThrow();
+        card.setFavorite(!card.isFavorite());
+        flashcardRepository.save(card);
+    }
+
+    // 4. Silent toggle for Practice (Called by JavaScript)
+    @GetMapping("/api/toggle-practice/{id}")
+    public void togglePracticeApi(@PathVariable Long id) {
+        Flashcard card = flashcardRepository.findById(id).orElseThrow();
+        card.setNeedsPractice(!card.isNeedsPractice());
+        flashcardRepository.save(card);
+    }  
+
+
+
+
+
+
+
 }

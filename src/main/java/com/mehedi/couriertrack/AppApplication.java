@@ -20,26 +20,33 @@ public class AppApplication {
 	}
 
 	@Bean
-	public CommandLineRunner demo(AppUserRepository userRepository, DeckRepository deckRepository, FlashcardRepository flashcardRepository) {
-		return (args) -> {
-			
-			// 1. Create a Test User (You!)
-			AppUser mehedi = new AppUser("mehedi", "password123", "USER");
-			userRepository.save(mehedi);
+    public CommandLineRunner demo(AppUserRepository userRepository, DeckRepository deckRepository, FlashcardRepository flashcardRepository) {
+        return (args) -> {
+            
+            // Check the cloud database first!
+            if (userRepository.findByUserName("mehedi") == null) {
+                
+                // 1. Create a Test User
+                AppUser mehedi = new AppUser("mehedi", "password123", "USER");
+                userRepository.save(mehedi);
 
-			// 2. Create a Test Deck for your Finnish Retake Exam
-			Deck finnishDeck = new Deck("Finnish Basics", "FI", mehedi);
-			deckRepository.save(finnishDeck);
+                // 2. Create a Test Deck
+                Deck finnishDeck = new Deck("Finnish Basics", "FI", mehedi);
+                deckRepository.save(finnishDeck);
 
-			// 3. Add some Flashcards to the Finnish Deck
-			Flashcard card1 = new Flashcard("Hello", "Moi", finnishDeck);
-			Flashcard card2 = new Flashcard("Thank you", "Kiitos", finnishDeck);
-			
-			flashcardRepository.save(card1);
-			flashcardRepository.save(card2);
+                // 3. Add some Flashcards
+                Flashcard card1 = new Flashcard("Hello", "Moi", finnishDeck);
+                Flashcard card2 = new Flashcard("Thank you", "Kiitos", finnishDeck);
+                
+                flashcardRepository.save(card1);
+                flashcardRepository.save(card2);
 
-			System.out.println("LINGUAVAULT TEST DATA LOADED SUCCESSFULLY!");
-		};
-	}
+                System.out.println("LINGUAVAULT TEST DATA LOADED TO CLOUD!");
+            } else {
+                System.out.println("CLOUD DATA ALREADY EXISTS. SKIPPING SETUP!");
+            }
+            
+        };
+    }
 
 }

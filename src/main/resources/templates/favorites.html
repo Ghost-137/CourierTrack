@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>My Favorites</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f9f9f9;">
+    <div th:replace="~{fragments :: header}"></div>
+
+    <div style="padding: 0 30px;">
+        <h1>⭐ My Favorite Words</h1>
+        <table style="width: 100%; max-width: 600px; border-collapse: collapse; background: white;">
+            <tr style="background-color: #ecf0f1; text-align: left;">
+                <th style="padding: 12px; border-bottom: 2px solid #bdc3c7;">Front</th>
+                <th style="padding: 12px; border-bottom: 2px solid #bdc3c7;">Back</th>
+                <th style="padding: 12px; border-bottom: 2px solid #bdc3c7;">Language/Deck</th>
+            </tr>
+            <tr th:each="card : ${favorites}">
+                <td th:text="${card.frontText}" style="padding: 12px; border-bottom: 1px solid #eee;"></td>
+                <td th:text="${card.backText}" style="padding: 12px; border-bottom: 1px solid #eee;"></td>
+                <td th:text="${card.deck.name}" style="padding: 12px; border-bottom: 1px solid #eee;"></td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>
