@@ -1,0 +1,47 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Manage Deck</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <div th:replace="~{fragments :: header}"></div>
+
+    <h1>📂 Managing Deck: <span th:text="${deck.name}"></span></h1>
+    <a href="/decks">⬅ Back to Dashboard</a>
+    <hr>
+
+    <div style="border: 2px solid green; padding: 15px; width: 400px; margin-bottom: 30px;">
+        <h3>Add a New Word</h3>
+        <form th:action="@{/deck/{id}/addCard(id=${deck.id})}" th:object="${newCard}" method="post">
+            
+            <label>Front of Card (Word):</label><br>
+            <input type="text" th:field="*{frontText}" required placeholder="e.g. To eat"><br><br>
+
+            <label>Back of Card (Translation):</label><br>
+            <input type="text" th:field="*{backText}" required placeholder="e.g. Syödä"><br><br>
+
+            <button type="submit">Add to Deck</button>
+        </form>
+    </div>
+
+    <h2>Cards in this Deck</h2>
+    <table border="1" cellpadding="10">
+        <tr>
+            <th>Front (Word)</th>
+            <th>Back (Translation)</th>
+            <th>Action</th>
+        </tr>
+        <tr th:each="card : ${flashcards}">
+            <td th:text="${card.frontText}"></td>
+            <td th:text="${card.backText}"></td>
+            <td>
+                <a th:href="@{/deleteCard/{deckId}/{cardId}(deckId=${deck.id}, cardId=${card.id})}" onclick="return confirm('Are you sure you want to delete this card?');" style="color: #e74c3c; text-decoration: none; font-size: 14px;">🗑️ Delete</a>
+            </td>
+
+        </tr>
+    </table>
+
+</body>
+</html>

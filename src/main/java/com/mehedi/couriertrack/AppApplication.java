@@ -1,9 +1,5 @@
 package com.mehedi.couriertrack;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalTime;
-
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,8 +7,10 @@ import org.springframework.context.annotation.Bean;
 
 import com.mehedi.couriertrack.domain.AppUser;
 import com.mehedi.couriertrack.domain.AppUserRepository;
-import com.mehedi.couriertrack.domain.Shift;
-import com.mehedi.couriertrack.domain.ShiftRepository;
+import com.mehedi.couriertrack.domain.Deck;
+import com.mehedi.couriertrack.domain.DeckRepository;
+import com.mehedi.couriertrack.domain.Flashcard;
+import com.mehedi.couriertrack.domain.FlashcardRepository;
 
 @SpringBootApplication
 public class AppApplication {
@@ -22,20 +20,25 @@ public class AppApplication {
 	}
 
 	@Bean
-	public CommandLineRunner demo(AppUserRepository appUserRepository, ShiftRepository shiftRepository) {
+	public CommandLineRunner demo(AppUserRepository userRepository, DeckRepository deckRepository, FlashcardRepository flashcardRepository) {
 		return (args) -> {
-			AppUser courier1 = new AppUser("Mehedi", "password123", "ROLE_COURIER");
-			appUserRepository.save(courier1);
+			
+			// 1. Create a Test User (You!)
+			AppUser mehedi = new AppUser("mehedi", "password123", "USER");
+			userRepository.save(mehedi);
 
-			Shift shift1 = new Shift();
-			shift1.setShiftDate(LocalDate.now());
-			shift1.setStartTime(LocalTime.of(17, 0));
-			shift1.setEndTime(LocalTime.of(21, 30));
-			shift1.setGrossEarnings(new BigDecimal("85.50"));
-			shift1.setKilometersDriven(42.5);
-			shift1.setAppUser(courier1);
+			// 2. Create a Test Deck for your Finnish Retake Exam
+			Deck finnishDeck = new Deck("Finnish Basics", "FI", mehedi);
+			deckRepository.save(finnishDeck);
 
-			shiftRepository.save(shift1);
+			// 3. Add some Flashcards to the Finnish Deck
+			Flashcard card1 = new Flashcard("Hello", "Moi", finnishDeck);
+			Flashcard card2 = new Flashcard("Thank you", "Kiitos", finnishDeck);
+			
+			flashcardRepository.save(card1);
+			flashcardRepository.save(card2);
+
+			System.out.println("LINGUAVAULT TEST DATA LOADED SUCCESSFULLY!");
 		};
 	}
 
