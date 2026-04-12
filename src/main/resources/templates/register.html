@@ -1,0 +1,29 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Register - LinguaVault</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f6f8; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .login-box { background: white; padding: 40px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 350px; text-align: center; }
+        input { width: 90%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; }
+        .standard-btn { width: 100%; background-color: #27ae60; color: white; padding: 12px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <h2 style="color: #2c3e50; margin-bottom: 5px;">Create an Account</h2>
+        <p style="color: gray; margin-bottom: 20px;">Start your language journey.</p>
+
+        <form th:action="@{/register}" th:object="${user}" method="post">
+            <input type="text" th:field="*{userName}" placeholder="Choose a Username" required autofocus />
+            <input type="password" th:field="*{password}" placeholder="Create a Password" required />
+            <button type="submit" class="standard-btn">Register Now</button>
+        </form>
+
+        <p style="margin-top: 25px; font-size: 14px;">
+            Already have an account? <a href="/login" style="color: #2980b9; font-weight: bold; text-decoration: none;">Back to Login</a>
+        </p>
+    </div>
+</body>
+</html>

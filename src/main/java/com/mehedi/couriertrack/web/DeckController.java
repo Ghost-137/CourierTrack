@@ -1,5 +1,6 @@
 package com.mehedi.couriertrack.web;
 
+import java.security.Principal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,35 +25,36 @@ public class DeckController {
 
     // 1. Show the Dashboard Page
     @GetMapping("/decks")
-    public String showDecks(Model model) {
-        // Send ALL decks to the HTML page
-        model.addAttribute("decks", deckRepository.findAll());
-        // Send an EMPTY deck to the HTML page for the "Create New" form
+    public String showDecks(Model model, Principal principal) {
+        String username = principal.getName(); 
+
+        // Auto-Register new Google users
+        AppUser currentUser = userRepository.findByUserName(username);
+        if (currentUser == null) {
+            currentUser = new AppUser(username, "google-auth-no-password", "USER");
+            userRepository.save(currentUser);
+        }
+
+        // ONLY show this specific user's decks
+        model.addAttribute("decks", deckRepository.findByAppUserUserName(username)); 
         model.addAttribute("newDeck", new Deck()); 
         
-        return "decks"; 
+        return "decks";
     }
 
-    // 2. Catch the data when you click "Save Deck"
-    @PostMapping("/saveDeck")
-    public String saveDeck(Deck newDeck) {
-        // Find your user account from the database
-        AppUser mehedi = userRepository.findByUserName("mehedi");
-        
-        // Link this new deck to you!
-        newDeck.setAppUser(mehedi);
-        
-        // Save it to the database
+    // 2. Add a new Deck (Dynamically assigned to whoever is logged in!)
+    @PostMapping("/addDeck")
+    public String addDeck(Deck newDeck, Principal principal) {
+        AppUser currentUser = userRepository.findByUserName(principal.getName());
+        newDeck.setAppUser(currentUser); 
         deckRepository.save(newDeck);
-        
-        // Refresh the page
-        return "redirect:/decks"; 
+        return "redirect:/decks";
     }
 
     // 3. Delete a Deck
     @GetMapping("/deleteDeck/{id}")
     public String deleteDeck(@PathVariable("id") Long deckId) {
         deckRepository.deleteById(deckId);
-        return "redirect:/decks"; // Send them back to the dashboard
+        return "redirect:/decks"; 
     }
 }

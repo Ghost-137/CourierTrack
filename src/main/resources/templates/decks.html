@@ -13,7 +13,7 @@
 
         <div style="background: white; border: 1px solid #ddd; padding: 20px; width: 350px; margin-bottom: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
             <h3 style="margin-top: 0;">Create a New Deck</h3>
-            <form th:action="@{/saveDeck}" th:object="${newDeck}" method="post">
+            <form th:action="@{/addDeck}" th:object="${newDeck}" method="post">
                 <label>Deck Name:</label><br>
                 <input type="text" th:field="*{name}" required placeholder="e.g. Italian Food" style="width: 90%; padding: 8px; margin: 5px 0 15px 0;"><br>
 
